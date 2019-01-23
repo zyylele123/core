@@ -45,7 +45,7 @@ func main() {
 	}
 
 	if os.Getenv("ROLE") == "bootstrap" {
-		peerEvent, err := p.SubscribeEvent("peerTalk", 100, peerTalk.Register{}, peerTalk.Done{})
+		peerEvent, err := p.SubscribeEvent(100, peerTalk.Register{}, peerTalk.Done{})
 		if err != nil {
 			logger.Fatal(err)
 		}
@@ -128,7 +128,7 @@ func main() {
 			}
 		}
 	} else {
-		peerEvent, err := p.SubscribeEvent("peerTalk", 100, peerTalk.Bootstrap{}, peerTalk.Grouping{})
+		peerEvent, err := p.SubscribeEvent(100, peerTalk.Bootstrap{}, peerTalk.Grouping{})
 		if err != nil {
 			logger.Fatal(err)
 		}
@@ -142,9 +142,9 @@ func main() {
 
 		suite := suites.MustFind("bn256")
 
-		peerEventForDKG, _ := p.SubscribeEvent("peerTalk", 1, dkg.ReqPublicKey{}, dkg.ReqDeal{}, dkg.ReqResponses{}, vss.PublicKey{},
+		peerEventForDKG, _ := p.SubscribeEvent(1, dkg.ReqPublicKey{}, dkg.ReqDeal{}, dkg.ReqResponses{}, vss.PublicKey{},
 			dkg.Deal{}, dkg.Responses{})
-		defer p.UnSubscribeEvent("peerTalk", dkg.ReqPublicKey{}, dkg.ReqDeal{}, dkg.ReqResponses{}, vss.PublicKey{},
+		defer p.UnSubscribeEvent(dkg.ReqPublicKey{}, dkg.ReqDeal{}, dkg.ReqResponses{}, vss.PublicKey{},
 			dkg.Deal{}, dkg.Responses{})
 
 		p2pdkg := dkg.CreateP2PDkg(p, suite, peerEventForDKG)
