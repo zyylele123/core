@@ -5,16 +5,16 @@ group:
     nodes:
       -
         ip: 10.250.1.2/32
-        cmd: export appSubject=T_FindNode && export appName=BootNode && export NODEROLE=boot && export PEERSIZE=10 && export NUMOFMESSAGS=1 && export TESTSTRATEGY=FINDNODE && ./scripts/peernode
+        cmd: export appSubject=T_FindNode && export appName=BootNode && export NODEROLE=boot && export PEERSIZE=10 && export NUMOFMESSAGS=1 && export TESTSTRATEGY=FINDNODE export CONFIGPATH=/scripts && ./scripts/peernode
       -
         ip: 10.250.2.2/32
-        cmd: export appSubject=T_FindNode && export appName=PeerNode && export BOOTSTRAPIP=10.250.1.2:44460 && export PEERSIZE=10 && export NUMOFMESSAGS=1 && export TESTSTRATEGY=FINDNODE && ./scripts/peernode
+        cmd: export appSubject=T_FindNode && export appName=PeerNode && export BOOTSTRAPIP=10.250.1.2:44460 && export PEERSIZE=10 && export NUMOFMESSAGS=1 && export TESTSTRATEGY=FINDNODE export CONFIGPATH=/scripts && ./scripts/peernode
       -
         ip: 10.250.3.2/32
-        cmd: export appSubject=T_FindNode && export appName=PeerNode && export BOOTSTRAPIP=10.250.1.2:44460 && export PEERSIZE=10 && export NUMOFMESSAGS=1 && export TESTSTRATEGY=FINDNODE && ./scripts/peernode
+        cmd: export appSubject=T_FindNode && export appName=PeerNode && export BOOTSTRAPIP=10.250.1.2:44460 && export PEERSIZE=10 && export NUMOFMESSAGS=1 && export TESTSTRATEGY=FINDNODE export CONFIGPATH=/scripts && ./scripts/peernode
       -
         ip: 10.250.4.2/32
-        cmd: export appSubject=T_FindNode && export appName=PeerNode && export BOOTSTRAPIP=10.250.1.2:44460 && export PEERSIZE=10 && export NUMOFMESSAGS=1 && export TESTSTRATEGY=FINDNODE && ./scripts/peernode
+        cmd: export appSubject=T_FindNode && export appName=PeerNode && export BOOTSTRAPIP=10.250.1.2:44460 && export PEERSIZE=10 && export NUMOFMESSAGS=1 && export TESTSTRATEGY=FINDNODE export CONFIGPATH=/scripts && ./scripts/peernode
     delay: "100ms 10ms 30%"
     loss: "1% 10%"
   -
@@ -22,13 +22,13 @@ group:
     nodes:
       -
         ip: 10.250.5.2/32
-        cmd: export appSubject=T_FindNode && export appName=PeerNode && export BOOTSTRAPIP=10.250.1.2:44460 && export PEERSIZE=10 && export NUMOFMESSAGS=1 && export TESTSTRATEGY=FINDNODE && ./scripts/peernode
+        cmd: export appSubject=T_FindNode && export appName=PeerNode && export BOOTSTRAPIP=10.250.1.2:44460 && export PEERSIZE=10 && export NUMOFMESSAGS=1 && export TESTSTRATEGY=FINDNODE export CONFIGPATH=/scripts && ./scripts/peernode
       -
         ip: 10.250.6.2/32
-        cmd: export appSubject=T_FindNode && export appName=PeerNode && export BOOTSTRAPIP=10.250.1.2:44460 && export PEERSIZE=10 && export NUMOFMESSAGS=1 && export TESTSTRATEGY=FINDNODE && ./scripts/peernode
+        cmd: export appSubject=T_FindNode && export appName=PeerNode && export BOOTSTRAPIP=10.250.1.2:44460 && export PEERSIZE=10 && export NUMOFMESSAGS=1 && export TESTSTRATEGY=FINDNODE export CONFIGPATH=/scripts && ./scripts/peernode
       -
         ip: 10.250.7.2/32
-        cmd: export appSubject=T_FindNode && export appName=PeerNode && export BOOTSTRAPIP=10.250.1.2:44460 && export PEERSIZE=10 && export NUMOFMESSAGS=1 && export TESTSTRATEGY=FINDNODE && ./scripts/peernode
+        cmd: export appSubject=T_FindNode && export appName=PeerNode && export BOOTSTRAPIP=10.250.1.2:44460 && export PEERSIZE=10 && export NUMOFMESSAGS=1 && export TESTSTRATEGY=FINDNODE export CONFIGPATH=/scripts && ./scripts/peernode
     delay: "10ms 5ms 30%"
     loss: "1% 10%"
   -
@@ -36,16 +36,16 @@ group:
     nodes:
       -
         ip: 10.250.8.2/32
-        cmd: export appSubject=T_FindNode && export appName=PeerNode && export BOOTSTRAPIP=10.250.1.2:44460 && export PEERSIZE=10 && export NUMOFMESSAGS=1 && export TEST STRATEGY=FINDNODE && ./scripts/peernode
+        cmd: export appSubject=T_FindNode && export appName=PeerNode && export BOOTSTRAPIP=10.250.1.2:44460 && export PEERSIZE=10 && export NUMOFMESSAGS=1 && export TESTSTRATEGY=FINDNODE export CONFIGPATH=/scripts && ./scripts/peernode
       -
         ip: 10.250.9.2/32
-        cmd: export appSubject=T_FindNode && export appName=PeerNode && export BOOTSTRAPIP=10.250.1.2:44460 && export PEERSIZE=10 && export NUMOFMESSAGS=1 && export TESTSTRATEGY=FINDNODE && ./scripts/peernode
+        cmd: export appSubject=T_FindNode && export appName=PeerNode && export BOOTSTRAPIP=10.250.1.2:44460 && export PEERSIZE=10 && export NUMOFMESSAGS=1 && export TESTSTRATEGY=FINDNODE export CONFIGPATH=/scripts && ./scripts/peernode
       -
         ip: 10.250.10.2/32
-        cmd: export appSubject=T_FindNode && export appName=PeerNode && export BOOTSTRAPIP=10.250.1.2:44460 && export PEERSIZE=10 && export NUMOFMESSAGS=1 && export TESTSTRATEGY=FINDNODE && ./scripts/peernode
+        cmd: export appSubject=T_FindNode && export appName=PeerNode && export BOOTSTRAPIP=10.250.1.2:44460 && export PEERSIZE=10 && export NUMOFMESSAGS=1 && export TESTSTRATEGY=FINDNODE export CONFIGPATH=/scripts && ./scripts/peernode
       -
         ip: 10.250.11.2/32
-        cmd: export appSubject=T_FindNode && export appName=PeerNode && export BOOTSTRAPIP=10.250.1.2:44460 && export PEERSIZE=10 && export NUMOFMESSAGS=1 && export TESTSTRATEGY=FINDNODE && ./scripts/peernode
+        cmd: export appSubject=T_FindNode && export appName=PeerNode && export BOOTSTRAPIP=10.250.1.2:44460 && export PEERSIZE=10 && export NUMOFMESSAGS=1 && export TESTSTRATEGY=FINDNODE export CONFIGPATH=/scripts && ./scripts/peernode
     delay: "100ms 10ms 30%"
     duplicate: "1%"
     rate: "100mbit"
