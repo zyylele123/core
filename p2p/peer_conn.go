@@ -5,7 +5,6 @@ import (
 	"context"
 	"encoding/binary"
 	"errors"
-	"io"
 	"net"
 	"sync"
 	"sync/atomic"
@@ -22,6 +21,7 @@ import (
 	"crypto/aes"
 	"crypto/cipher"
 
+	"fmt"
 	"github.com/dedis/kyber"
 )
 
@@ -114,20 +114,14 @@ func (p *PeerConn) SendMessage(msg proto.Message) (err error) {
 
 func (p *PeerConn) receiveLoop() {
 	var err error
-	var buf []byte
 	var pa *internal.Package
 	var ptr *ptypes.DynamicAny
-
+	receivech := p.receivePackage()
 	for {
-		if buf, err = p.receivePackage(); err != nil {
-			if err != io.EOF {
-				p.logger.Error(err)
-			} else {
-				p.logger.Event("EndEof")
-			}
+		buf, ok := <-receivech
+		if !ok {
 			break
 		}
-
 		if pa, ptr, err = p.decodePackage(buf); err != nil {
 			continue
 		}
@@ -225,41 +219,62 @@ func (p *PeerConn) EndWithoutDelete() {
 	p.logger.Event("EndWithoutDelete")
 }
 
-func (p *PeerConn) receivePackage() ([]byte, error) {
-	var err error
+func (p *PeerConn) receivePackage() <-chan []byte {
+	ch := make(chan []byte)
+	go func() {
+		defer close(ch)
+		for {
+			var err error
+			// Read until all header bytes have been read.
+			buffer := make([]byte, 4)
 
-	// Read until all header bytes have been read.
-	buffer := make([]byte, 4)
+			bytesRead, totalBytesRead := 0, 0
+			c := *p.conn
+			for totalBytesRead < 4 && err == nil {
+				if bytesRead, err = c.Read(buffer[totalBytesRead:]); err != nil {
+					log.Error(err)
+					break
+				}
+				totalBytesRead += bytesRead
+			}
+			if err != nil {
+				continue
+			}
+			// Decode message size.
+			size := binary.BigEndian.Uint32(buffer)
+			if size == 0 {
+				err := errors.New("received an empty message from a peer")
+				log.Error(err)
+				continue
+			}
 
-	bytesRead, totalBytesRead := 0, 0
-	c := *p.conn
-	for totalBytesRead < 4 && err == nil {
-		if bytesRead, err = c.Read(buffer[totalBytesRead:]); err != nil {
-			return nil, err
+			// Read until all message bytes have been read.
+			buffer = make([]byte, size)
+
+			bytesRead, totalBytesRead = 0, 0
+
+			for totalBytesRead < int(size) && err == nil {
+				if bytesRead, err = c.Read(buffer[totalBytesRead:]); err != nil {
+					log.Error(err)
+					break
+				}
+				totalBytesRead += bytesRead
+			}
+			if err != nil {
+				continue
+			}
+			select {
+			case ch <- buffer:
+			case <-p.ctx.Done():
+				return
+			case <-time.After(2 * time.Second):
+				<-ch
+				fmt.Println("receivePackage handing message time out")
+			}
 		}
-		totalBytesRead += bytesRead
-	}
+	}()
+	return ch
 
-	// Decode message size.
-	size := binary.BigEndian.Uint32(buffer)
-	if size == 0 {
-		err := errors.New("received an empty message from a peer")
-		return nil, err
-	}
-
-	// Read until all message bytes have been read.
-	buffer = make([]byte, size)
-
-	bytesRead, totalBytesRead = 0, 0
-
-	for totalBytesRead < int(size) && err == nil {
-		if bytesRead, err = c.Read(buffer[totalBytesRead:]); err != nil {
-			return nil, err
-		}
-		totalBytesRead += bytesRead
-	}
-
-	return buffer, nil
 }
 
 func (p *PeerConn) decodePackage(bytes []byte) (*internal.Package, *ptypes.DynamicAny, error) {
